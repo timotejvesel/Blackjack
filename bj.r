@@ -1,3 +1,5 @@
+###  Osnovna igra, kjer strategija igralca ni odvisna od kart dealerja temveč le od vsote njegovih kart.
+
 
 # Paket 52 kart. J, Q in K so vredni 10, as je lahko vreden 1 ali 11.
 
@@ -10,7 +12,7 @@ karte <- function(n) {
 }
 
 
-# Funkcija sprejme karte, ki so v roki (igralca ali dealerja). Asom v roki se določi vrednost 1 ali pa 11.
+# Funkcija sprejme karte, ki so v roki (lca ali dealerja). Asom v roki se določi vrednost 1 ali pa 11.
 # To je odvisno od vsote ostalih kart v roki.
 
 vsota_karte <- function(roka) {
@@ -95,8 +97,8 @@ dealer_str <- function(d_roka, karte, i) {
 
 
 # Strategija igralca. 
-# Za začetek bo vzel novo karto, če bo vsota manjša od 16
-igralec_str <- function(igr_roka, karte, i) {
+# Za začetek bo vzel novo karto, če bo vsota manjša od igr_stand
+igralec_str <- function(igr_roka, karte, i, igr_stand) {
   st_kart <- length(karte)
   stand <- FALSE
   
@@ -108,7 +110,7 @@ igralec_str <- function(igr_roka, karte, i) {
       stand <- TRUE
       
     }
-    else if (trenutna_vsota < 16) {
+    else if (trenutna_vsota < igr_stand) {
       i <- i + 1
       igr_roka <- c(igr_roka, karte[i])
     } 
@@ -121,7 +123,7 @@ igralec_str <- function(igr_roka, karte, i) {
 }
 
 
-igra <- function(karte, stava) {
+igra <- function(karte, stava, igr_stand) {
   
   st_kart <- length(karte)
   i <- 0
@@ -142,7 +144,7 @@ igra <- function(karte, stava) {
     }
     
     # strategija za igralca
-    igralec <- igralec_str(igr_roka, karte, i)
+    igralec <- igralec_str(igr_roka, karte, i, igr_stand)
     i <- igralec[2] #posodobimo indeks
     
     # če gre igralec preko 21, v vsakem primeru izgubi, tudi če gre dealer preko 21, zato dealer niti ne igra več.
@@ -172,8 +174,8 @@ igra <- function(karte, stava) {
 
 ############################################
 N <- 12
-
 stava <- 1
+igr_stand <- 15
 
 # 2 paketa kart
 vse_karte <- karte(2)
@@ -183,7 +185,72 @@ rezultati <- data.frame(N = 1:12, zmage = numeric(N))
 
 for (i in 1:N) {
   zmesane_karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
-  rezultati$zmage[i] <- igra(zmesane_karte, stava)
+  rezultati$zmage[i] <- igra(zmesane_karte, stava, igr_stand)
+}
+
+iteracije <- 1:N
+kable(data.frame(iteracije, rezultati$zmage))
+
+#######################################################
+# število simulacij
+sim <- 1000
+
+# create a vector to store results of play
+rezultati1 <- data.frame(N = 1:sim, povprecje_zmag = numeric(sim))
+
+for (k in 1:sim) {
+  for (i in 1:N) {
+    zmesane_karte <- sample(vse_karte,length(vse_karte), replace = FALSE)
+    rezultati$zmage[i] <- igra(zmesane_karte, stava, igr_stand)
+  }
+  rezultati1$povprecje_zmag[k] <- mean(rezultati$zmage)
 }
 
 
+
+#################################
+# Katera od "naivnih" strategij je najboljša, torej do katere vsote naj igralec hita. 
+
+set.seed(111)
+
+stand  <- data.frame(igr_stand = 11:20, povprecje_zmag = numeric(10))
+igr_stand <- 11
+
+igralec_stand <- function(n) {
+  vse_karte <- karte(n)
+  for (j in 1:10) {
+    rezultati2 <- data.frame(N = 1:sim, povprecje_zmag = numeric(sim))
+    for (k in 1:sim) {
+      for (i in 1:N) {
+        zmesane_karte <- sample(vse_karte,length(vse_karte), replace = FALSE)
+        rezultati$zmage[i] <- igra(zmesane_karte, stava, igr_stand)
+      }
+      rezultati2$povprecje_zmag[k] <- mean(rezultati$zmage)
+    }
+    stand$povprecje_zmag[j] <- mean(rezultati2$povprecje_zmag)
+    igr_stand <- igr_stand + 1
+  }
+  return(stand)
+}
+
+paket1 <- igralec_stand(1)
+paket2 <- igralec_stand(2)
+paket3 <- igralec_stand(3)
+paket4 <- igralec_stand(4)
+paket5 <- igralec_stand(5)
+paket6 <- igralec_stand(6)
+paket7 <- igralec_stand(7)
+paket8 <- igralec_stand(8)
+
+
+paketi.stand <- Reduce(function(x,y) merge(x,y,by="igr_stand",all=TRUE),
+                       list(paket1, paket2, paket3, paket4, paket5, paket6, paket7, paket8))
+
+colnames(paketi.stand) <- c("stand",paste(c(1:8), "pak", sep = "_"))
+
+save(paketi.stand, file="paketi_stand.Rda")
+#load("paketi_stand.Rda")
+
+# najmanjši house edge za vsa števila paketov kart
+mini <- apply(paketi.stand[,-1], 2, which.max)
+mini <- mini + 10 #pri vseh paketih je najbolje hitati do 14 (oz. do 15)
