@@ -178,7 +178,7 @@ igra <- function(stava, iter) {
 }
 
 ############################################
-iter <- 1000000
+iter <- 100000
 stava <- 1
 
-he <- igra(stava,iter)
+he_slaba <- igra(stava,iter)

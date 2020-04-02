@@ -237,11 +237,11 @@ igra <- function(stava, iter) {
 }
 
 ############################################
-iter <- 1000000
-stava <- 100
+iter <- 100000
+stava <- 1
 
-load("hit-stand-hard.Rda")
-load("hit-stand-soft.Rda")
+load("tabele-strategij/hit-stand-hard.Rda")
+load("tabele-strategij/hit-stand-soft.Rda")
 
 #house edge
-he <- igra(stava,iter)
+he_hs <- igra(stava,iter)

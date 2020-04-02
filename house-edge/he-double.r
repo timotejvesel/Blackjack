@@ -250,12 +250,12 @@ igra <- function(stava, iter) {
 }
 
 ############################################
-load("double-hard.Rda") #tabele optimalne strategije
-load("hit-stand.Rda")
-load("double-soft.Rda")
-load("hit-stand-soft.Rda")
+load("tabele-strategij/double-hard.Rda") #tabele optimalne strategije
+load("tabele-strategij/hit-stand-hard.Rda")
+load("tabele-strategij/double-soft.Rda")
+load("tabele-strategij/hit-stand-soft.Rda")
 
-iter <- 1000000
+iter <- 100000
 stava <- 1 #zacetna stava
 
-he <- igra(stava,iter)
+he_double <- igra(stava,iter)

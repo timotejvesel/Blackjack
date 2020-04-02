@@ -156,10 +156,10 @@ rownames(hit.stand) <- c(3:21)
 hit.stand[c("19","20","21"),] <- "S"
 hit.stand[c("3","4"),] <- "H" 
 
-n <- 10000 #stevilo iteracij
-
 stolpci <- colnames(hit.stand)
 vrstice <- c(18:5)
+
+n <- 10000 #stevilo iteracij
 
 
 for (j in vrstice) {
@@ -200,4 +200,4 @@ for (j in vrstice) {
   }
 }
 
-save(hit.stand,file="hit-stand-hard.Rda")
+#save(hit.stand,file="hit-stand-hard.Rda")
