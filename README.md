@@ -33,3 +33,13 @@ House edge je prednost hiše oziroma izguba igralca na dolgi rok. House edge ozi
 Pri tem je potrebno paziti, da je v imenovalcu res vsota začetnih stav in ne vsota vseh stav (npr. pri "double" začetno stavo podvojimo).
 
 Je pa višina house edga zelo odvisna od pravil igre. Če, ceteris paribus, Blackjack izplača 1:1 namesto 3:2, se house edge poveča za kar 2.5 krat, iz 1.39% na 3.5%.
+
+## Program
+V mapi `osnovne-strategije` so programi s katerimi dobimo osnovne (optimalne) strategije za osnovno igro z opcijama hit & stand in igro, kjer lahko igralec podvoji stavo (pri obeh tako za hard kot tudi za soft hand). Za večino kombinacij je sicer dovolj 10 000 simulacij (verjetno še precej manj), za tiste kjer optimalna strategija ni tako očitna pa je potrebnih vsaj 100 000 simulacij. Ker to traja precej (preveč) časa, so vse strategije že v mapi `tabele-strategij` in jih lahko pokličemo.
+
+V mapi `house-edge` so programi, ki simulirajo igre Blackjacka:
+ * igralec jemlje nove karte, dokler vrednost roke ni 15,
+ * igralec igra optimalno strategijo za hit & stand,
+ * igralec igra optimalno strategijo za hit, stand & double.
+ 
+ Če poženemo datoteko `house-edge.r`, pa dobimo house edge za vse tri možnosti.
