@@ -177,9 +177,7 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
 
 
 igra <- function(stava, iter) {
-  zacetni_denar_igralec <- 100000000
-  denar_igralec <- 100000000
-  total_initial_bet <- 0
+  denar_igralec <- 0
   vse_karte <- st_paketov(8)
   karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
   st_kart <- length(karte)
@@ -187,7 +185,6 @@ igra <- function(stava, iter) {
   zasluzek_izguba <- 0
   
   for (j in 1:iter) {
-    total_initial_bet <- total_initial_bet + stava
     i <- as.numeric(i)
     if (i <= (st_kart - 4)) {
       i <- i + 2
@@ -235,8 +232,7 @@ igra <- function(stava, iter) {
     }
     
   }
-  total_lost <- zacetni_denar_igralec - denar_igralec
-  house_edge <- total_lost / total_initial_bet
+  house_edge <- denar_igralec / (iter * stava)
   return(house_edge)
 }
 
