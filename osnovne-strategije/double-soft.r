@@ -1,9 +1,8 @@
-### V pravila dodan double
-### Izračun optimalne strategije (hit, stand & double; dealer stands on soft 17)
+### Optimalna strategija za hit, stand & double (dealer stands on soft 17)
+### Za soft hand
 
 
-
-vsota_karte <- function(roka) { #popravi, da bo ok za vse primere
+vsota_karte <- function(roka) { 
   asi <- FALSE
   as_lokacije <- numeric()
   vsota <- 0
@@ -41,6 +40,9 @@ vsota_karte <- function(roka) { #popravi, da bo ok za vse primere
   if (vsota <= 9 & length(as_lokacije) >= 1) {
     vsota <- vsota + 11
     vsota <- vsota + length(as_lokacije) - 1
+    if (vsota > 21) {
+      vsota <- vsota - 10 #ce imamo npr. 9 in 3 ase, so vsi vredni 1
+    }
     return(vsota)
   }
   
@@ -94,23 +96,57 @@ igralec_str <- function(igr_roka, strategija, stava) {
     trenutna_vsota <- vsota_karte(igr_roka)
     nova_stava <- 2 * stava
     return(c(trenutna_vsota, i, nova_stava))
-    }
-    
+  }
+  
   # ce je strategija hit, vsaj enkrat vzamemo novo karto
   while (stand != TRUE) {
+    soft <- FALSE
     #cat(paste(c("Igralčeva roka (hit): ", igr_roka, "\n"), collapse=" "))
     trenutna_vsota <- vsota_karte(igr_roka)
     vrstica <- as.character(trenutna_vsota)
     stolpec <- as.character(d_odkrita)
-    element <- double[vrstica, stolpec]
-    element[is.na(element)] <- 0
+    if ("AS" %in% igr_roka) {
+      indeks <- match("A",igr_roka)
+      vsota_brez <- vsota_karte(igr_roka[-indeks])
+      if (vsota_brez == trenutna_vsota - 11) { # v roki je as vreden 11 -> soft hand
+        element <- double_soft[vrstica, stolpec]
+        element[is.na(element)] <- 0
+        soft <- TRUE
+      }
+      else {
+        element <- double[vrstica, stolpec]
+        element[is.na(element)] <- 0
+      }
+    }
+    else {
+      element <- double[vrstica, stolpec]
+      element[is.na(element)] <- 0
+    }
     if (stevec == 0) { # če je strategija == hit, 1. vedno vzamemo novo karto
       igr_roka <- c(igr_roka, sample(paket_kart,1))
       stevec <- stevec + 1
     }
-    else if (element == "H" || element == "D") { # ce po hit dobimo vsoto za strategijo double, lahko le hitamo.
+    else if (element == "H") {
       igr_roka <- c(igr_roka, sample(paket_kart,1))
-    } 
+    }
+    else if (element == "D" & soft == FALSE) { #ker lahko podvojimo samo na začetku, moramo sicer pogledati v tabelo samo za hit & stand
+      element <- hit.stand[vrstica, stolpec]
+      if (element == "H") {
+        igr_roka <- c(igr_roka, sample(paket_kart,1))
+      }
+      else if (element == "S") {
+        stand <- TRUE
+      }
+    }
+    else if (element == "D" & soft == TRUE) { #ker lahko podvojimo samo na začetku, moramo sicer pogledati v tabelo samo za hit & stand
+      element <- soft1[vrstica, stolpec]
+      if (element == "H") {
+        igr_roka <- c(igr_roka, sample(paket_kart,1))
+      }
+      else if (element == "S") {
+        stand <- TRUE
+      }
+    }
     else {
       stand <- TRUE
     }
@@ -155,21 +191,17 @@ igra <- function(igr_roka, d_roka, strategija) {
 paket_kart <- rep(c(2:10, 10, 10, 10, "A"), 4)
 
 #tabela optimalne strategije
-double <- data.frame(matrix(NA, nrow = 17, ncol = 10))
-colnames(double) <- c(2:10, "A")
-rownames(double) <- c(5:21)
-
-# če je vstota >= 19 ocitno ne bomo vzeli nove karte (neodvisno od odkrite karte dealerja).
-double[c("19","20","21"),] <- "S"
+double_soft <- data.frame(matrix(NA, nrow = 9, ncol = 10))
+colnames(double_soft) <- c(2:10, "A")
+rownames(double_soft) <- c(13:21)
+double_soft[c("21"),] <- "S" # ce je vsota 21 (as + 10), ne bomo vzeli nove karte
+vrstice <- list(c("A",9),c("A",8),c("A",7),c("A",6),c("A",5),c("A",4),c("A",3),c("A",2))
+stolpci <- colnames(double_soft)
 
 n <- 100000 #stevilo iteracij
 
-stolpci <- colnames(double)
-vrstice <- c(18:5)
-
-
 for (j in vrstice) {
-  vs <- sum(j)
+  vs <- 11 + as.numeric(j[2]) 
   igr_roka <- j #določimo karti za igralca (pomembna je vsota)
   print(j)
   for (k in stolpci) {
@@ -200,32 +232,20 @@ for (j in vrstice) {
         }
       }
     }
-    print(zmaga.hit)
-    print(zmaga.stand)
-    print(zmaga.double)
+    cat(paste(c(k,zmaga.hit,zmaga.stand,zmaga.double,"\n")))
     v <- c(zmaga.hit, zmaga.stand, zmaga.double)
     if (max(v) == get("zmaga.hit")) {
-      double[as.character(vs), as.character(k)] <- "H"
-      }
+      double_soft[as.character(vs), as.character(k)] <- "H"
+    }
     else if (max(v) == get("zmaga.stand")) {
-      double[as.character(vs), as.character(k)] <- "S"
-      }
+      double_soft[as.character(vs), as.character(k)] <- "S"
+    }
     else {
-      double[as.character(vs), as.character(k)] <- "D"
+      double_soft[as.character(vs), as.character(k)] <- "D"
     }
   }
 }
-# d <- data.frame(matrix(NA, nrow = 1, ncol = 10))
-# colnames(d) <- c(2:10, "A")
-# rownames(d) <- c("3")
-# d[c("3"),] <- "H"
-# double <- rbind(d,double)
-# load("double.Rda")
-# save(double,file="double.Rda")
-# 
-# d <- data.frame(matrix(NA, nrow = 2, ncol = 10))
-# colnames(d) <- c(2:10, "A")
-# rownames(d) <- c("3","4")
-# d[c("3","4"),] <- "H"
-# hit.stand <- rbind(d,hit.stand)
-# save(hit.stand, file = "hit-stand.Rda")
+
+#save(double_soft,file="double-soft.Rda")
+
+

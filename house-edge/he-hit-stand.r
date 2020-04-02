@@ -1,5 +1,5 @@
-###  Simulacije BJ, kjer igralec igra po optimalni (osnovni strategiji). Hit, stand & double. Dealer stands on soft 17.
-# program vrne house edge te igre.
+###  Simulacije BJ, kjer igralec igra po optimalni (osnovni strategiji). Samo hit & stand. Dealer stands on soft 17.
+
 
 paket_kart <- rep(c(2:10, 10, 10, 10, "A"), 4)
 
@@ -67,7 +67,7 @@ vsota_karte <- function(roka) {
 
 
 dealer_str <- function(d_roka, karte, i) {
-  vse_karte <- st_paketov(4)
+  vse_karte <- st_paketov(8)
   st_kart <- length(karte)
   stand <- FALSE
   
@@ -95,17 +95,17 @@ dealer_str <- function(d_roka, karte, i) {
 
 # Strategija igralca. Strategiji iz double & double_soft ter hit.stand & soft1
 igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
-  vse_karte <- st_paketov(4)
+  vse_karte <- st_paketov(8)
   st_kart <- length(karte)
   d_odkrita <- d_roka[1]#odkrita karta dealerja
   trenutna_vsota <- vsota_karte(igr_roka)
   vrstica <- as.character(trenutna_vsota) # vrednost igralčeve roke
   stolpec <- as.character(d_odkrita)
-  
   if (i == st_kart) { # če porabimo vse karte, zmešamo nove 
     karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
     i <- 0
   }
+  
   if (length(igr_roka) == 2 & trenutna_vsota == 21) { #ce imamo blackjack (natural 21) koncamo, izplaca se 3:2
     stava <- 1.5 * stava
     return(list(c(trenutna_vsota, i, stava),karte))
@@ -115,27 +115,20 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
     indeks <- match("A",igr_roka)
     vsota_brez <- vsota_karte(igr_roka[-indeks])
     if (vsota_brez == trenutna_vsota - 11) { # v roki je as vreden 11 -> soft hand
-      element <- double_soft[vrstica, stolpec]
-      }
+      element <- soft1[vrstica, stolpec]
+    }
     else {
-      element <- double[vrstica,stolpec]
-      }
+      element <- hit.stand[vrstica,stolpec]
     }
+  }
   else {
-    element <- double[vrstica, stolpec]
-    }
+    element <- hit.stand[vrstica, stolpec]
+  }
   if (element == "S") { #če stand, ne vzamemo nobene nove karte
     return(list(c(trenutna_vsota, i, stava),karte))
   }
-  else if (element == "D") { #če double, vzamemo 1 novo karto
-    i <- i + 1
-    igr_roka <- c(igr_roka, karte[i])
-    stava <- stava * 2
-    trenutna_vsota <- vsota_karte(igr_roka)
-    return(list(c(trenutna_vsota, i, stava),karte))
-  }
   
- # ce hit, vzamemo 1 karto in nadaljujemo
+  # ce hit, vzamemo 1 karto in nadaljujemo
   else if (element == "H") {
     i <- i + 1
     igr_roka <- c(igr_roka, karte[i])
@@ -148,7 +141,7 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
   while (stand != TRUE) {
     trenutna_vsota <- vsota_karte(igr_roka)
     vrstica <- as.character(trenutna_vsota)
-  
+    
     if (i == st_kart) { # če porabimo vse karte, zmešamo nove 
       karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
       i <- 0
@@ -184,19 +177,15 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
 
 
 igra <- function(stava, iter) {
-  #zacetni_denar_igralec <- 100000000
-  #denar_igralec <- 100000000
   denar_igralec <- 0
-  #total_initial_bet <- 0
-  vse_karte <- st_paketov(4)
+  vse_karte <- st_paketov(8)
   karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
   st_kart <- length(karte)
   i <- 0
   zasluzek_izguba <- 0
   
- for (j in 1:iter) {
-   #total_initial_bet <- total_initial_bet + stava
-   i <- as.numeric(i)
+  for (j in 1:iter) {
+    i <- as.numeric(i)
     if (i <= (st_kart - 4)) {
       i <- i + 2
       igr_roka <- c(karte[i-1], karte[i])
@@ -242,20 +231,17 @@ igra <- function(stava, iter) {
       denar_igralec <- denar_igralec - nova_stava
     }
     
- }
-  #total_lost <- zacetni_denar_igralec - denar_igralec
-  #house_edge <- total_lost / total_initial_bet
+  }
   house_edge <- denar_igralec / (iter * stava)
   return(house_edge)
 }
 
 ############################################
-load("double.Rda") #tabele optimalne strategije
-load("hit-stand.Rda")
-load("double-soft.Rda")
-load("soft-pravilna.Rda")
-
 iter <- 1000000
-stava <- 1 #zacetna stava
+stava <- 100
 
+load("hit-stand-hard.Rda")
+load("hit-stand-soft.Rda")
+
+#house edge
 he <- igra(stava,iter)

@@ -1,5 +1,6 @@
+# Iskanje optimalne strategije za hit & stand, soft hand
 
-vsota_karte <- function(roka) { #popravi, da bo ok za vse primere
+vsota_karte <- function(roka) { 
   asi <- FALSE
   as_lokacije <- numeric()
   vsota <- 0
@@ -37,6 +38,9 @@ vsota_karte <- function(roka) { #popravi, da bo ok za vse primere
   if (vsota <= 9 & length(as_lokacije) >= 1) {
     vsota <- vsota + 11
     vsota <- vsota + length(as_lokacije) - 1
+    if (vsota > 21) {
+      vsota <- vsota - 10 #ce imamo npr. 9 in 3 ase, so vsi vredni 1
+    }
     return(vsota)
   }
   
@@ -91,7 +95,20 @@ igralec_str <- function(igr_roka, hit) {
     trenutna_vsota <- vsota_karte(igr_roka)
     vrstica <- as.character(trenutna_vsota)
     stolpec <- as.character(d_odkrita)
-    element <- soft[vrstica, stolpec]
+    
+    if ("AS" %in% igr_roka) {
+      indeks <- match("A",igr_roka)
+      vsota_brez <- vsota_karte(igr_roka[-indeks])
+      if (vsota_brez == trenutna_vsota - 11) { # v roki je as vreden 11 -> soft hand
+        element <- soft1[vrstica, stolpec]
+      }
+      else {
+        element <- hit.stand[vrstica, stolpec] #hard hand
+      }
+    }
+    else {
+      element <- hit.stand[vrstica, stolpec] #hard hand
+    }
     element[is.na(element)] <- 0
     if (stevec == 0) { # če je hit == TRUE, 1. vedno vzammeo novo karto
       igr_roka <- c(igr_roka, sample(paket_kart,1))
@@ -142,14 +159,14 @@ igra <- function(gr_roka, d_roka, hit) {
 
 
 paket_kart <- rep(c(2:10, 10, 10, 10, "A"), 4)
-n <- 100000 #stevilo iteracij
+n <- 10000 #stevilo iteracij
 
-soft <- data.frame(matrix(NA, nrow = 9, ncol = 10))
-colnames(soft) <- c(2:10, "A")
-rownames(soft) <- c(13:21)
-soft[c("21","20","19"),] <- "S" # ce je vsota 21 (as + 10), ne bomo vzeli nove karte
-vrstice <- list(c("A",7),c("A",6),c("A",5),c("A",4),c("A",3),c("A",2))
-stolpci <- colnames(soft)
+soft1 <- data.frame(matrix(NA, nrow = 9, ncol = 10))
+colnames(soft1) <- c(2:10, "A")
+rownames(soft1) <- c(13:21)
+soft1[c("21","20"),] <- "S" # ce je vsota 21 (as + 10), ne bomo vzeli nove karte
+vrstice <- list(c("A",8),c("A",7),c("A",6),c("A",5),c("A",4),c("A",3),c("A",2))
+stolpci <- colnames(soft1)
 
 
 for (j in vrstice) {
@@ -180,14 +197,14 @@ for (j in vrstice) {
         }
       }
     }
-    cat(paste(c("hit:",zmaga.hit,"\n"), sep=""))
-    cat(paste(c("stand:",zmaga.stand,"\n"), sep=""))
+    cat(paste(c("hit:",zmaga.hit,"stand",zmaga.stand, "\n"), sep=""))
     if (zmaga.hit > zmaga.stand) {
-      soft[as.character(vs), as.character(k)] <- "H"
+      soft1[as.character(vs), as.character(k)] <- "H"
     }
     else {
-      soft[as.character(vs), as.character(k)] <- "S"
+      soft1[as.character(vs), as.character(k)] <- "S"
     }
   }
 }
-save(soft,file="soft.Rda")
+
+#save(soft1,file="hit-stand-soft.Rda")
