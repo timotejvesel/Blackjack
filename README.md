@@ -14,3 +14,22 @@ Ko igralec zaključi, je na vrsti dealer, ki jemlje nove karte (razen, če igral
 ### Izbira pravil
 Vsak kazino izbere svoja pravila igre, tako da obstaja več kot 100 variacij igre.
 Kot pri vseh igralniških igrah, tudi pri Blackjacku igralec na dolgi rok proti igralnici izgubi ("house edge"). Izbira pravila je za igralnico zelo pomembna, saj je višina house edga odvisna predvsem od njih. Prednost dealerja je v tem, da če vrednost igralčeve roke preseže 21, bo igralec v vsakem primeru izgubil (tudi če bi dealer nato presegel 21).
+
+Tako kot kazinoji moram za obravnavo igre tudi sam najprej določiti pravila. Trenutna pravila:
+ * igralec lahko na začetku podvoji stavo in vzame natanko 1 karto (ang. double)
+ * dealer ne vzame nove karte pri soft 17,
+ * blackjack (natural 21; prvi dve karti imata vsoto 21) izplača 3:2,
+ * 4-8 paketov kart.
+ 
+ ### "Optimalna" strategija
+Vsaka igra Blackjacka ima *"optimalno"* oziroma *osnovno strategijo*, ki določi optimalen način igranja igralca za vsako roko proti poljubni navzgor obrnjeni karti dealerja. S tem igralec minimizira (dolgoročno) prednost hiše (ang. house edge) oziroma svojo pričakovano izgubo.
+Izraz optimalna strategija pa je lahko nekoliko zavajajoč, saj ta strategija minimizira prednost hiše le, če igralec igra "pošteno" (ne šteje kart,...). 
+Strategijo lahko dobimo na več načinov, sam pa sem jo dobil s pomočjo Monte Carlo simulacij. Za vsako kombinacijo vrednosti igralčeve roke (hard in soft) in odkrito dealerjevo karto sem tako določil najboljšo potezo, ki jo lahko naredi igralec. 
+
+### House edge
+House edge je prednost hiše oziroma izguba igralca na dolgi rok. House edge oziroma njegov približek lahko izračunamo s pomočjo MC simulacij kot 
+*HE = VsotaIzgubljenegaDenarja / VsotaZačetnihStav*
+
+Pri tem je potrebno paziti, da je v imenovalcu res vsota začetnih stav in ne vsota vseh stav (npr. pri "double" začetno stavo podvojimo).
+
+Je pa višina house edga zelo odvisna od pravil igre. Če, ceteris paribus, Blackjack izplača 1:1 namesto 3:2, se house edge poveča za kar 2.5 krat, iz 1.39% na 3.5%.
