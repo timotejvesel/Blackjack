@@ -1,100 +1,11 @@
 ###  Simulacije BJ. Igralec igra po slabi strategiji, tj. vedno hita do 15, neodvisno od kart dealerja
 
-paket_kart <- rep(c(2:10, 10, 10, 10, "A"), 4)
+source("funkcije.r") #karte, vsota_kart, strategija dealerja
 
-st_paketov <- function(n) {
-  vse_karte <- rep(paket_kart, n)
-  return(vse_karte)
-}
-
-vsota_karte <- function(roka) { #popravi, da bo ok za vse primere
-  asi <- FALSE
-  as_lokacije <- numeric()
-  vsota <- 0
-  
-  # poišči ase
-  for (i in 1:length(roka)) {
-    if(roka[i] == "A") {
-      asi <- TRUE
-      as_lokacije <- c(as_lokacije, i)
-    }
-  }
-  
-  # roka brez asov
-  roka <- as.numeric(roka)
-  if (asi == FALSE) {
-    for (i in roka) {
-      vsota <- vsota + i
-    }
-    return(vsota)
-  }
-  
-  # v roki so asi
-  ne_asi <- roka[!roka %in% "A"]
-  ne_asi <- ne_asi[!is.na(ne_asi)] #ko odstranimo as namesto njega vsili NA???? V konzoli pa ne
-  ne_asi <- as.numeric(ne_asi)
-  vsota <- vsota + sum(ne_asi)
-  
-  # če vsota brez asov > 10, imajo vsi asi vrednost 1
-  if (vsota > 10) {
-    vsota <- vsota + length(as_lokacije)
-    return(vsota)
-  }
-  
-  # če vsota brez asov <= 9, je pomembno njihovo število. En je lahko 11, ostali pa 1.
-  if (vsota <= 9 & length(as_lokacije) >= 1) {
-    vsota <- vsota + 11
-    vsota <- vsota + length(as_lokacije) - 1
-    if (vsota > 21) {
-      vsota <- vsota - 10 #ce imamo npr. 9 in 3 ase, so vsi vredni 1
-    }
-    return(vsota)
-  }
-  
-  # če je vsota brez asov 10 in je 1 as => 11
-  # če jih je več => vsi so 1
-  if (vsota == 10 & length(as_lokacije) == 1) {
-    vsota <- vsota + 11
-    return(vsota)
-  } 
-  else {
-    vsota <- vsota + length(as_lokacije)
-    return(vsota)
-  }
-  
-}
-
-
-dealer_str <- function(d_roka, karte, i) {
-  vse_karte <- st_paketov(8)
-  st_kart <- length(karte)
-  stand <- FALSE
-  
-  while (stand != TRUE) {
-    trenutna_vsota <- vsota_karte(d_roka)
-    
-    # Če zmanjka kart, se ustavimo. To se da verjetno narediti bolje.
-    if (i == st_kart) { # če porabimo vse karte, zmešamo nove 
-      karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
-      i <- 0
-    }
-    if (trenutna_vsota < 17) {
-      i <- as.numeric(i)
-      i <- i + 1
-      d_roka <- c(d_roka, karte[i])
-    } 
-    else {
-      stand <- TRUE
-    }
-    
-  }
-  return(list(c(trenutna_vsota, i),karte))
-}
-
-
+##################################################################
 # Strategija igralca
-igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
-  vse_karte <- st_paketov(8)
+igralec_str1 <- function(igr_roka, karte, i, d_roka, stava, meja, paketi, natural) {
+  vse_karte <- st_paketov(paketi)
   st_kart <- length(karte)
   stand <- FALSE
   
@@ -104,7 +15,11 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
       karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
       i <- 0
     }
-    if (trenutna_vsota < 15) {
+    if (length(igr_roka) == 2 & trenutna_vsota == 21) { #ce imamo blackjack (natural 21) koncamo, izplaca se 3:2
+      stava <- natural * stava
+      return(list(c(trenutna_vsota, i, stava),karte))
+    }
+    if (trenutna_vsota < meja) {
       i <- i + 1
       igr_roka <- c(igr_roka, karte[i])
     } 
@@ -116,9 +31,9 @@ igralec_str <- function(igr_roka, karte, i, d_roka, stava) {
 }
 
 
-igra <- function(stava, iter) {
+he.slaba <- function(stava, iter, meja, paketi, natural) {
   denar_igralec <- 0
-  vse_karte <- st_paketov(8)
+  vse_karte <- st_paketov(paketi)
   karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
   st_kart <- length(karte)
   i <- 0
@@ -144,13 +59,13 @@ igra <- function(stava, iter) {
     }
     
     # strategija za igralca
-    igralec <- igralec_str(igr_roka, karte, i, d_roka, stava)
+    igralec <- igralec_str1(igr_roka, karte, i, d_roka, stava, meja, paketi, natural)
     i <- igralec[[1]][2] #posodobimo indeks
     karte <- igralec[[2]] #karte s katerimi igramo (ce jih vmes ne zmanjka, so prvotne)
     
     # če gre igralec preko 21, v vsakem primeru izgubi, tudi če gre dealer preko 21, zato dealer niti ne igra več.
     if (igralec[[1]][1] <= 21) {
-      dealer <- dealer_str(d_roka, karte, i)
+      dealer <- dealer_str_bs(d_roka, karte, i, paketi)
       i <- dealer[[1]][2]
       karte <- dealer[[2]]
     }
@@ -174,11 +89,14 @@ igra <- function(stava, iter) {
   }
   house_edge <- denar_igralec / (iter * stava)
   return(house_edge)
-  return(house_edge)
 }
 
 ############################################
-iter <- 100000
-stava <- 1
 
-he_slaba <- igra(stava,iter)
+# paketi <- 8
+# iter <- 100000
+# stava <- 1
+# meja <- 15
+# natural <- 1
+# he_slaba <- he.slaba(stava,iter,meja, paketi, natural)
+

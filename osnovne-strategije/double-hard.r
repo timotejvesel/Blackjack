@@ -2,84 +2,7 @@
 ### Izračun optimalne strategije (hit, stand & double; dealer stands on soft 17)
 
 
-
-vsota_karte <- function(roka) {
-  asi <- FALSE
-  as_lokacije <- numeric()
-  vsota <- 0
-  
-  # poišči ase
-  for (i in 1:length(roka)) {
-    if(roka[i] == "A") {
-      asi <- TRUE
-      as_lokacije <- c(as_lokacije, i)
-    }
-  }
-  
-  # roka brez asov
-  roka <- as.numeric(roka)
-  if (asi == FALSE) {
-    for (i in roka) {
-      vsota <- vsota + i
-    }
-    return(vsota)
-  }
-  
-  # v roki so asi
-  ne_asi <- roka[!roka %in% "A"]
-  ne_asi <- ne_asi[!is.na(ne_asi)] #ko odstranimo as namesto njega vsili NA???? V konzoli pa ne
-  ne_asi <- as.numeric(ne_asi)
-  vsota <- vsota + sum(ne_asi)
-  
-  # če vsota brez asov > 10, imajo vsi asi vrednost 1
-  if (vsota > 10) {
-    vsota <- vsota + length(as_lokacije)
-    return(vsota)
-  }
-  
-  # če vsota brez asov <= 9, je pomembno njihovo število. En je lahko 11, ostali pa 1.
-  if (vsota <= 9 & length(as_lokacije) >= 1) {
-    vsota <- vsota + 11
-    vsota <- vsota + length(as_lokacije) - 1
-    if (vsota > 21) {
-      vsota <- vsota - 10 #ce imamo npr. 9 in 3 ase, so vsi vredni 1
-    }
-    return(vsota)
-  }
-  
-  # če je vsota brez asov 10 in je 1 as => 11
-  # če jih je več => vsi so 1
-  if (vsota == 10 & length(as_lokacije) == 1) {
-    vsota <- vsota + 11
-    return(vsota)
-  } 
-  else {
-    vsota <- vsota + length(as_lokacije)
-    return(vsota)
-  }
-  
-}
-
-
-# "Strategija" dealerja. Dokler je vsota kart manjša od 17 vleče nove karte. Stand on soft 17
-dealer_str <- function(d_roka) {
-  st_kart <- length(karte)
-  stand <- FALSE
-  
-  while (stand != TRUE) {
-    #cat(paste(c("Dealerjeva roka: ", d_roka, "\n"), collapse=" "))
-    trenutna_vsota <- vsota_karte(d_roka)
-    
-    if (trenutna_vsota < 17) {
-      d_roka <- c(d_roka, sample(paket_kart,1))
-    }
-    else {
-      stand <- TRUE
-    }
-    
-  }
-  return(trenutna_vsota)
-}
+source("funkcije.r") #karte, vsota_kart, strategija dealerja
 
 
 # Strategija igralca. 
@@ -132,7 +55,7 @@ igra <- function(igr_roka, d_roka, strategija) {
   
   # če gre igralec preko 21, v vsakem primeru izgubi, tudi če gre dealer preko 21, zato dealer niti ne igra več.
   if (igralec[1] <= 21) {
-    dealer <- dealer_str(d_roka)
+    dealer <- dealer_str_opt(d_roka)
   }
   stava <- igralec[3]
   ### možni rezultati:

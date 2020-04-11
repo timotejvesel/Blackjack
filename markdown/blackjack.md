@@ -22,8 +22,8 @@ Tako kot kazinoji sem moral za obravnavo igre tudi sam najprej določiti pravila
  * blackjack (natural 21; prvi dve karti imata vsoto 21) lahko izplača 3:2, 6:5 ali 1:1,
  * 4-8 paketov kart.
  
-Včasih so vsi kazinoji za blackjack izplačevali 3:2, v zadnjem času pa nekateri izplačujejo 6:5 ali pa celo 1:1, kar je za igralca precej slabše.
- 
+Včasih so vsi kazinoji za blackjack izplačevali 3:2, v zadnjem času pa nekateri izplačujejo 6:5 ali pa celo 1:1 kar je za igralca veliko slabše.
+
 ### "Optimalna" strategija
 Vsaka igra Blackjacka ima *"optimalno"* oziroma *osnovno strategijo*, ki določi optimalen način igranja igralca za vsako roko proti poljubni navzgor obrnjeni karti dealerja. S tem igralec minimizira (dolgoročno) prednost hiše (ang. house edge) oziroma svojo pričakovano izgubo.
 Izraz optimalna strategija pa je lahko nekoliko zavajajoč, saj ta strategija minimizira prednost hiše le, če igralec igra "pošteno" (ne šteje kart,...). 
@@ -35,7 +35,7 @@ House edge je prednost hiše oziroma izguba igralca na dolgi rok. House edge ozi
 
 Pri tem je potrebno paziti, da je v imenovalcu res vsota začetnih stav in ne vsota vseh stav (npr. pri "double" začetno stavo podvojimo).
 
-Je pa višina house edga zelo odvisna od pravil igre. Če, ceteris paribus, Blackjack izplača 1:1 namesto 3:2, se house edge poveča za kar 2.5 krat, iz 1.39% na 3.5%.
+Višina house edga je precej odvisna od pravil igre.
 
 ### Štetje kart
 Štetje kart je (v kombinaciji z optimalno strategijo) strategija s katero lahko igralec zmanjša house edge. Obstaja več načinov štetja kart. Vsem je skupno, da igralec vsaki karti določi neko vrednost. Ko je neka karta izvlečena števec poveča oziroma zmanjša za njeno vrednost. Ko je vrednost števca nizka, stavi manj, ko pa je vrednost večja, pa več denarja. Igralec, ki šteje karte je še v večji prednosti, če se igra z manj paketi kart, saj je v največji prednosti, ko so karte pri koncu. 
@@ -59,16 +59,3 @@ Ta metoda je nekoliko bolj zahtevna, vendar tudi učinkovitejša. Kartam se dolo
  * A, 8, 9: 0
 
 Prav tako je to uravnotežen sistem. Poleg tega moramo tudi tu izračunati true count. 
-
-## Program
-V mapi `osnovne-strategije` so programi s katerimi dobimo osnovne (optimalne) strategije za osnovno igro z opcijama hit & stand in igro, kjer lahko igralec podvoji stavo (pri obeh tako za hard kot tudi za soft hand). Za večino kombinacij je sicer dovolj 10 000 simulacij (verjetno še precej manj), za tiste kjer optimalna strategija ni tako očitna pa je potrebnih vsaj 100 000 simulacij. Ker to traja precej (preveč) časa, so vse strategije že v mapi `tabele-strategij` in jih lahko pokličemo.
-
-V mapi `house-edge` so programi, ki simulirajo igre Blackjacka:
- * igralec jemlje nove karte, dokler vrednost roke ni 15,
- * igralec igra optimalno strategijo za hit & stand,
- * igralec igra optimalno strategijo za hit, stand & double,
- * strategije s štetjem kart.
- 
-### Navodila za zagon Shiny aplikacije
-Glavni program za Shiny se nahaja v datoteki `ui.r`.
- 
