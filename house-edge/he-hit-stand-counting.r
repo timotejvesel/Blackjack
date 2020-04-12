@@ -184,8 +184,8 @@ counting.hs <- function(paketi, iter, natural, stetje) {
   
   stava <- betting_unit
   vsota_zacetne_stave <- stava
-  #rc <- c()
-  #tc <- c()
+  # rc <- c()
+  # tc <- c()
   for (j in 1:iter) {
     bj <- igra.hs(stava, paketi, stetje, running_count, denar_igralec, trenutna, karte, natural)
     running_count <- bj[[1]][1]
@@ -193,8 +193,8 @@ counting.hs <- function(paketi, iter, natural, stetje) {
     denar_igralec <- bj[[1]][3]
     karte <- bj[[2]]
     true_count <- floor(running_count / decks_remaining(stevilo_kart, trenutna))
-    #rc <- c(rc,running_count)
-    #tc <- c(tc,true_count)
+    # rc <- c(rc,running_count)
+    # tc <- c(tc,true_count)
     if (true_count <= 1) {
       stava <- 1
     }
@@ -202,7 +202,7 @@ counting.hs <- function(paketi, iter, natural, stetje) {
       stava <- (true_count - 1) * betting_unit * 1.25
     }
     else {
-      stava <- (true_count - 1) * betting_unit * 1.5
+      stava <- (true_count) * betting_unit * 1.5
     }
     if (j != iter) {
       #cat(c("stava",stava,"\n"))
@@ -223,4 +223,4 @@ counting.hs <- function(paketi, iter, natural, stetje) {
 # }
 
 
-# x <- counting.hs(6,1000000,1.5, hi_opt2)
+# x <- counting.hs(6,100000,1.5, wong_halves)

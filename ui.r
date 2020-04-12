@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinyjs)
 library(dplyr)
 library(shinycssloaders)
+library(shinyWidgets)
 
 
 source("house-edge/he-slaba.R")
@@ -27,6 +28,7 @@ dashboardPage(
   ),
   # BODY ----------------------------------------------------------------- 
   dashboardBody(
+    includeCSS("www/styles.css"),
     tabItems(
       
       tabItem(tabName = "domov",
@@ -35,7 +37,7 @@ dashboardPage(
       ),
       
       tabItem(tabName = "hit_stand",
-              h1("Tabele osnovnih (optimalnih) strategij za osnovno različico"),
+              h2("Tabele osnovnih (optimalnih) strategij za osnovno različico"),
               fluidRow(
                 tabBox(width = 8,
                        tabPanel("Hard hand", tableOutput("hit_stand_h")),
@@ -47,7 +49,7 @@ dashboardPage(
                 box(width = 8, includeMarkdown("markdown/tabele.md"))
         )),
         tabItem(tabName = "double",
-                h1("Tabele osnovnih (optimalnih) strategij za različico z double"),
+                h2("Tabele osnovnih (optimalnih) strategij za različico z double"),
                 fluidRow(
                   tabBox(width = 8,
                          tabPanel("Hard hand", tableOutput("double_h")),
@@ -59,7 +61,7 @@ dashboardPage(
       # HOUSE EDGE
         tabItem(tabName = "he",
                 
-                h1("Izračuna house edga"),
+                h2("Izračuna house edga"),
                 fluidRow(
                   tabBox(width = 10,
                          tabPanel("'Slaba' strategija", selectInput('meja','Izberi mejo', c(11:21), selected = 16),
@@ -70,7 +72,7 @@ dashboardPage(
                                   textOutput("hs_slaba") %>% withSpinner(color="#0dc5c1")
                                   ),
                          tabPanel("'Optimalna' strategija", 
-                                  checkboxInput("double2", "Double", FALSE),
+                                  prettySwitch("double2", "Double", value = FALSE, bigger = TRUE),
                                   selectInput('natural2','Izberi koliko izplača natural 21', c("3:2","6:5","1:1"), selected = "3:2"),
                                   selectInput('paketi2','Stevilo paketov kart', c(4,6,8), selected = 8),
                                   selectInput('iter2','Stevilo iteracij', c(1e4, 1e5, 1e6), selected = 1e5),
@@ -78,7 +80,7 @@ dashboardPage(
                                   textOutput("hs_opt") %>% withSpinner(color="#cc0066")
                                   ),
                          tabPanel("Štetje kart", 
-                                  checkboxInput("double3", "Double", FALSE),
+                                  prettyCheckbox("double3", "Double", value = FALSE, bigger = TRUE, animation = "pulse"),
                                   selectInput('natural3','Izberi koliko izplača natural 21', c("3:2","6:5","1:1"), selected = "3:2"),
                                   selectInput('paketi3','Stevilo paketov kart', c(4,6,8), selected = 8),
                                   selectInput('stetje','Nacin stetja kart', c("Hi-Lo","Hi-Opt II"), selected = "Hi-Lo"),

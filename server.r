@@ -11,6 +11,7 @@ rdata <- function(datoteka) {
 
 
 function(input, output, session) {
+  
   ############## tabele opt. strategij
   output$hit_stand_h <- renderTable({
     rdata1 <- rdata("tabele-strategij/hit-stand-hard.Rda")

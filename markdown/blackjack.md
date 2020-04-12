@@ -1,4 +1,4 @@
-# Blackjack
+## Blackjack
 Blackjack je ena izmed najbolj popularnih igralniških iger. Gre za igro s kartami, pri kateri igralec oziroma igralci tekmujejo proti delivcu (ang. dealer), pri čemer igralci ne tekmujejo med seboj. Pri igri se uporabi en ali več paketov 52 igralnih kart. Čeprav navzgor ni omejtive, se ponavadi uporabi od 6 do 8 paketov. Igralec stavi, da je njegova vsota kart višja kot dealerjeva, pri čemer vsota ne sme preseči 21 ("bust"). 
 
 ### Osnovna pravila

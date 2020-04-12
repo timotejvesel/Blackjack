@@ -181,6 +181,29 @@ hi_opt2 <- function(karta) {
   return(vrednost)
 }
 
+####################################################################
+# strategija stetja Wong Halves
+wong_halves <- function(karta) {
+  vrednost <- -1
+  if (karta == "5") {
+    vrednost <- 1.5
+  }
+  else if (karta %in% c("3","4","6")) {
+    vrednost <- 1
+  }
+  else if (karta %in% c("2","7")) {
+    vrednost <- 0.5
+  }
+  else if (karta == "8") {
+    vrednost <- 0
+  }
+  else if (karta == "9") {
+    vrednost <- -0.5
+  }
+  return(vrednost)
+}
+
+
 ##################################################################
 #koliko paketov je še ostalo
 decks_remaining <- function(vse_karte, trenutna_karta) {

@@ -1,0 +1,141 @@
+
+.irs-bar {
+  border-color: transparent;
+ background-color: transparent;
+}
+
+.irs-bar-edge {
+border-color: transparent;
+background-color: transparent;
+}
+
+h1 {
+  font-family: 'lobster', cursive; /*Brush Script MT???*/
+  font-weight: 600;
+  line-height: 1.1;
+  color: #201058
+
+}
+
+h2 {
+  font-family: 'lobster', cursive;
+  font-weight: 400;
+  line-height: 1.1;
+  color: black 
+}
+
+h3 {
+  font-family: 'lobster', cursive;
+  font-weight: 300;
+  line-height: 1.1;
+  color: black
+}
+
+h4 {
+  font-family: 'lobster', cursive;
+  font-weight: 300;
+  line-height: 1.1;
+  color: #4b426b 
+}
+
+
+#hs_slaba {
+  color: #201058;
+  background: White;
+  font-family: "Lobster", Helvetica, sans-serif;
+  font-size: 19px;
+}
+
+
+#hs_opt {
+  color: #201058;
+  background: White;
+  font-family: "Lobster", Helvetica, sans-serif;
+  font-size: 19px;
+}
+
+#hs_stetje {
+  color: #201058;
+  background: White;
+  font-family: "Lobster", Helvetica, sans-serif;
+  font-size: 19px;
+}
+
+.main-header .logo {
+  font-family: "Georgia", Times, "Times New Roman", serif;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.skin-blue .sidebar-menu > li.active > a{
+  border-left-color: gray;
+}
+
+.skin-blue .sidebar-menu > li:hover > a {
+  border-left-color: gray;
+}
+
+
+/* logo */
+.skin-blue .main-header .logo { /* naslov levo zgoraj */
+                              background-color: #563481
+                              }
+
+/* logo when hovered */
+.skin-blue .main-header .logo:hover {/* naslov levo zgoraj, pokrit z misko */
+                              background-color: gray;
+                              }
+
+/* navbar (rest of the header) */
+.skin-blue .main-header .navbar { /* rob zgoraj */
+                              background-color: #563481
+                              }        
+
+/* main sidebar */
+.skin-blue .main-sidebar {
+                          background-color: #563481
+                              }
+
+/* active selected tab in the sidebarmenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+                              background-color: #3e0983;
+                              }
+
+/* other links in the sidebarmenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a{
+                              background-color: #3e0983;
+                              color:  white
+                              }
+
+/* other links in the sidebarmenu when hovered */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+                              background-color: black;
+                              }
+/* toggle button when hovered  */                    
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+                              background-color: gray;
+                              }
+                              
+/* body, barva podlage */
+.content-wrapper, .right-side {
+                              background-color: gray97
+                                }
+                                
+                                
+                                
+                                
+                                
+.box.box-solid.box-primary>.box-header {
+  color: white;
+  background:#563481;
+                    }
+                    
+.box.box-solid.box-primary{
+border-bottom-color: #563481;
+border-left-color: #563481;
+border-right-color: #563481;
+border-top-color: #563481;
+}       
+
+
+

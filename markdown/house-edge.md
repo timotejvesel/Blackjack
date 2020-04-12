@@ -7,7 +7,7 @@ Pri tem je potrebno paziti, da je v imenovalcu res vsota začetnih stav in ne vs
 ### Skupne nastavitve pravil & opombe
  * Natural 21: koliko bo izplačal Blackjack oziroma Natural 21, to je, ko je vrednost začetne igralčeve roke 21.
  * Stevilo paketov kart: igra se lahko igra s 4, 6 ali pa 8 paketi. 
- * Stevilo iteracij: izračun z 100 000 iteracijami igre traja približno 10-15 sekund, vendar približek HE ni najboljši. Izračun z 1 milijonom iteracijami pa traja ustrezno dlje, vendar je približek, ki ga dobimo precej dober. Simulacija z 10 000 iteracijami igre pa nam da preslab približek za HE in je uporabna samo za okvirne primerjave house edgov različnih strategij ter pravil.
+ * Stevilo iteracij: izračun z 100 000 iteracijami igre traja približno 10-15 sekund, vendar približek HE ni najboljši. Izračun z 1 milijonom iteracijami pa traja ustrezno dlje, vendar je približek, ki ga dobimo precej dober. Simulacija z 10 000 iteracijami igre pa nam da preslab približek za HE in je v nekaterih primerih uporabna samo za okvirne primerjave house edgov različnih strategij ter pravil.
  * Pozitiven house edge pomeni, da je (dolgoročno) v prednosti igralec.
 
 #### 'Slaba' strategija
