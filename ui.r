@@ -16,7 +16,7 @@ dashboardPage(
   dashboardHeader(title = "Blackjack"),
   
   dashboardSidebar(
-    div(class = "inlay", style = "height:15px;width:100%;background-color: grey;"),
+    div(class = "inlay", style = "height:15px;width:100%;background-color: black;"),
   sidebarMenu(
     menuItem("Domov", tabName = "domov", icon = icon("home")),
     menuItem("Tabele osnovnih strategij", tabName = "tabele", icon = icon("table"), 

@@ -161,14 +161,20 @@ he.double <- function(stava, iter, paketi, natural) {
   #total_lost <- zacetni_denar_igralec - denar_igralec
   #house_edge <- total_lost / total_initial_bet
   house_edge <- denar_igralec / (iter * stava)
-  return(house_edge)
+  return(denar_igralec)
 }
 
 ############################################
 
-# iter <- 100000
-# stava <- 1 #zacetna stava
-# paketi <- 8
-# natural <- 1.5
+iter <- 100
+stava <- 1 #zacetna stava
+paketi <- 6
+natural <- 1.5
 # 
 # he_double <- he.double(stava,iter, paketi, natural)
+
+#house edge
+he_d <- c()
+for (k in 1:100) {
+  he_d <- c(he_d,he.double(stava,iter,paketi,natural))
+  }

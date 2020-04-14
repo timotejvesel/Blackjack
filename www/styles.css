@@ -68,11 +68,11 @@ h4 {
 }
 
 .skin-blue .sidebar-menu > li.active > a{
-  border-left-color: gray;
+  border-left-color: black;
 }
 
 .skin-blue .sidebar-menu > li:hover > a {
-  border-left-color: gray;
+  border-left-color: black;
 }
 
 
@@ -83,7 +83,7 @@ h4 {
 
 /* logo when hovered */
 .skin-blue .main-header .logo:hover {/* naslov levo zgoraj, pokrit z misko */
-                              background-color: gray;
+                              background-color: black;
                               }
 
 /* navbar (rest of the header) */
@@ -113,7 +113,7 @@ h4 {
                               }
 /* toggle button when hovered  */                    
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-                              background-color: gray;
+                              background-color: black;
                               }
                               
 /* body, barva podlage */

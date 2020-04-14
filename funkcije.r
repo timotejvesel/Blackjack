@@ -71,7 +71,6 @@ vsota_karte <- function(roka) {
 # "Strategija" dealerja. Dokler je vsota kart manjša od 17 vleče nove karte. Stand on soft 17. 
 # Za tabele opt. strategij
 dealer_str_opt <- function(d_roka) {
-  st_kart <- length(karte)
   stand <- FALSE
   
   while (stand != TRUE) {

@@ -11,7 +11,7 @@ igralec_str <- function(igr_roka, hit) {
   trenutna_vsota <- vsota_karte(igr_roka)
   if (hit == FALSE) {
     #cat(paste(c("Igralčeva roka (stand): ", igr_roka, "\n"), collapse=" "))
-    return(c(trenutna_vsota, i))
+    return(trenutna_vsota)
   }
   
   while (stand != TRUE) {

@@ -12,13 +12,13 @@ igralec_str <- function(igr_roka, strategija, stava) {
   trenutna_vsota <- vsota_karte(igr_roka)
   if (strategija == "stand") { # če je strategija stand, ne vzamemo nobene karte.
     #cat(paste(c("Igralčeva roka (stand): ", igr_roka, "\n"), collapse=" "))
-    return(c(trenutna_vsota, i, stava))
+    return(c(trenutna_vsota, stava))
   }
   if (strategija == "double") { # če je strategija stand, moramo vzeti natanko 1 novo karto, poleg tega se podvoji še stava
     igr_roka <- c(igr_roka, sample(paket_kart,1))
     trenutna_vsota <- vsota_karte(igr_roka)
     nova_stava <- 2 * stava
-    return(c(trenutna_vsota, i, nova_stava))
+    return(c(trenutna_vsota, nova_stava))
   }
   
   # ce je strategija hit, vsaj enkrat vzamemo novo karto
@@ -75,7 +75,7 @@ igralec_str <- function(igr_roka, strategija, stava) {
     }
     
   }
-  return(c(trenutna_vsota,i,stava))
+  return(c(trenutna_vsota, stava))
 }
 
 
@@ -90,7 +90,7 @@ igra <- function(igr_roka, d_roka, strategija) {
   if (igralec[1] <= 21) {
     dealer <- dealer_str_opt(d_roka)
   }
-  stava <- igralec[3]
+  stava <- igralec[2]
   ### možni rezultati:
   if (igralec[1] > 21) { #bust
     zmage <- -stava

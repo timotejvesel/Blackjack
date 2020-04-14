@@ -10,7 +10,7 @@ igralec_str <- function(igr_roka, hit) {
   trenutna_vsota <- vsota_karte(igr_roka)
   if (hit == FALSE) {
     #cat(paste(c("Igralčeva roka (stand): ", igr_roka, "\n"), collapse=" "))
-    return(c(trenutna_vsota, i))
+    return(trenutna_vsota)
   }
   
   while (stand != TRUE) {
@@ -36,7 +36,7 @@ igralec_str <- function(igr_roka, hit) {
 }
 
 
-igra <- function(gr_roka, d_roka, hit) {
+igra <- function(igr_roka, d_roka, hit) {
   zmage <- 0
   
   # strategija za igralca
@@ -70,7 +70,7 @@ igra <- function(gr_roka, d_roka, hit) {
 paket_kart <- rep(c(2:10, 10, 10, 10, "A"), 4)
 
 #tabela optimalne strategije
-hit.stand <- data.frame(matrix(NA, nrow = 17, ncol = 10))
+hit.stand <- data.frame(matrix(NA, nrow = 19, ncol = 10))
 colnames(hit.stand) <- c(2:10, "A")
 rownames(hit.stand) <- c(3:21)
 
@@ -78,10 +78,10 @@ rownames(hit.stand) <- c(3:21)
 hit.stand[c("19","20","21"),] <- "S"
 hit.stand[c("3","4"),] <- "H" 
 
-stolpci <- colnames(hit.stand)
+stolpci <- 2
 vrstice <- c(18:5)
 
-n <- 10000 #stevilo iteracij
+n <- 100000 #stevilo iteracij
 
 
 for (j in vrstice) {
@@ -111,7 +111,7 @@ for (j in vrstice) {
         }
       }
     }
-    print(zmaga.hit)
+    #print(zmaga.hit)
     print(zmaga.stand)
     if (zmaga.hit > zmaga.stand) {
       hit.stand[as.character(vs), as.character(k)] <- "H"
