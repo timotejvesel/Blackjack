@@ -2,7 +2,8 @@
 Blackjack je ena izmed najbolj popularnih igralniških iger. Gre za igro s kartami, pri kateri igralec oziroma igralci tekmujejo proti delivcu (ang. dealer), pri čemer igralci ne tekmujejo med seboj. Pri igri se uporabi en ali več paketov 52 igralnih kart. Čeprav navzgor ni omejtive, se ponavadi uporabi od 6 do 8 paketov. Igralec stavi, da je njegova vsota kart višja kot dealerjeva, pri čemer vsota ne sme preseči 21 ("bust"). 
 
 ### Navodila za zagon Shiny aplikacije
-Glavni program za Shiny se nahaja v datotekah `ui.r` in `server.r`. Aplikacijo lahko poženemo v obeh datotekah s klikom na gumb `Run App`. Poženemo jo lahko tudi, če v konzolo vpišemo ukaz `shiny::runApp`.
+Glavni program za Shiny se nahaja v datotekah `ui.r` in `server.r`. Aplikacijo lahko poženemo v obeh datotekah s klikom na gumb [![](https://shiny.rstudio.com/images/runapp.png)](#)
+ Poženemo jo lahko tudi, če v konzolo vpišemo ukaz `shiny::runApp`.
 
 Na nekaterih računalnikih je problem s prikazom grafov, zato je potrebno aplikacijo odpreti v brskalniku. To lahko storimo, ko smo že v aplikaciji, s klikom na `Open in Browser` ali pa v konzoli z ukazom `shiny::runApp(launch.browser = TRUE)`.
 
