@@ -1,4 +1,3 @@
-## Blackjack
 Blackjack je ena izmed najbolj popularnih igralniških iger. Gre za igro s kartami, pri kateri igralec oziroma igralci tekmujejo proti delivcu (ang. dealer), pri čemer igralci ne tekmujejo med seboj. Pri igri se uporabi en ali več paketov 52 igralnih kart. Čeprav navzgor ni omejtive, se ponavadi uporabi od 6 do 8 paketov. Igralec stavi, da je njegova vsota kart višja kot dealerjeva, pri čemer vsota ne sme preseči 21 ("bust"). 
 
 ### Osnovna pravila
@@ -31,7 +30,7 @@ Strategijo lahko dobimo na več načinov, sam pa sem jo dobil s pomočjo Monte C
 
 ### House edge
 House edge je prednost hiše oziroma izguba igralca na dolgi rok. House edge oziroma njegov približek lahko izračunamo s pomočjo MC simulacij kot 
-*HE = VsotaIzgubljenegaDenarja / VsotaZačetnihStav*
+#HE = VsotaIzgubljenegaDenarja / VsotaZačetnihStav*
 
 Pri tem je potrebno paziti, da je v imenovalcu res vsota začetnih stav in ne vsota vseh stav (npr. pri "double" začetno stavo podvojimo).
 

@@ -40,7 +40,7 @@ h4 {
 
 
 #hs_slaba {
-  color: #201058;
+  color: #000080;
   background: White;
   font-family: "Lobster", Helvetica, sans-serif;
   font-size: 19px;
@@ -48,14 +48,14 @@ h4 {
 
 
 #hs_opt {
-  color: #201058;
+  color: #000080;
   background: White;
   font-family: "Lobster", Helvetica, sans-serif;
   font-size: 19px;
 }
 
 #hs_stetje {
-  color: #201058;
+  color: #000080;
   background: White;
   font-family: "Lobster", Helvetica, sans-serif;
   font-size: 19px;
@@ -78,7 +78,7 @@ h4 {
 
 /* logo */
 .skin-blue .main-header .logo { /* naslov levo zgoraj */
-                              background-color: #563481
+                              background-color: #000080
                               }
 
 /* logo when hovered */
@@ -88,22 +88,23 @@ h4 {
 
 /* navbar (rest of the header) */
 .skin-blue .main-header .navbar { /* rob zgoraj */
-                              background-color: #563481
+                              background-color: #000080
                               }        
 
 /* main sidebar */
 .skin-blue .main-sidebar {
-                          background-color: #563481
+                           background-image:
+      				url("ozadje.jpg");
                               }
 
 /* active selected tab in the sidebarmenu */
 .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
-                              background-color: #3e0983;
+                              background-color: #000080;
                               }
 
 /* other links in the sidebarmenu */
 .skin-blue .main-sidebar .sidebar .sidebar-menu a{
-                              background-color: #3e0983;
+                              background-color: #000080;
                               color:  white
                               }
 
@@ -127,15 +128,80 @@ h4 {
                                 
 .box.box-solid.box-primary>.box-header {
   color: white;
-  background:#563481;
+  background:#000080;
                     }
                     
 .box.box-solid.box-primary{
-border-bottom-color: #563481;
-border-left-color: #563481;
-border-right-color: #563481;
-border-top-color: #563481;
+border-bottom-color: #000080;
+border-left-color: #000080;
+border-right-color: #000080;
+border-top-color: #000080;
 }       
 
+.js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #000080;}
+.js-irs-1 .irs-single, .js-irs-1 .irs-bar-edge, .js-irs-1 .irs-bar {background: #000080;}
+.js-irs-2 .irs-single, .js-irs-2 .irs-bar-edge, .js-irs-2 .irs-bar {background: #000080;}
+.js-irs-3 .irs-single, .js-irs-3 .irs-bar-edge, .js-irs-3 .irs-bar {background: #000080;}
+.js-irs-4 .irs-single, .js-irs-4 .irs-bar-edge, .js-irs-4 .irs-bar {background: coral;}
+.js-irs-5 .irs-single, .js-irs-5 .irs-bar-edge, .js-irs-5 .irs-bar {background: coral;}
+.js-irs-6 .irs-single, .js-irs-6 .irs-bar-edge, .js-irs-6 .irs-bar {background: coral;}
+.js-irs-7 .irs-single, .js-irs-7 .irs-bar-edge, .js-irs-7 .irs-bar {background: coral;}
+.js-irs-8 .irs-single, .js-irs-8 .irs-bar-edge, .js-irs-8 .irs-bar {background: coral;}
 
 
+.nav-tabs-custom .nav-tabs li.active {
+    border-top-color: #000080;
+}
+
+.btn-danger{
+    font-size: 18px;
+    font-family: inherit;
+    padding: 5px 12px;
+    height: 50px;
+    min-width: 10%;
+    margin: 0px 10px 14px 20px;
+    text-align: left;
+    color: white;
+    background: #727477;
+    text-indent: 4px;
+    vertical-align: middle;
+    border-radius: 0px;
+    border-color: transparent;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.18), 0 1px 5px 0 rgba(0,0,0,0.15);
+    text-transform: uppercase;
+    -webkit-transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
+    transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.btn-danger:hover{
+    background-color:#000080;
+    font-size: 18px;
+    font-family: inherit;
+    padding: 5px 12px;
+    height: 50px;
+    min-width: 15%;
+    margin: 0px 10px 14px 20px;
+    text-align: left;
+    color: white;
+    text-indent: 4px;
+    vertical-align: middle;
+    border-radius: 0px;
+    border-color: transparent;
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+    -webkit-transition: box-shadow 0.4s ease-out;
+    transition: box-shadow 0.4s ease-out;
+}
+
+.shiny-notification { /* za progress bar */
+              height: 80px;
+              width: 500px;
+              position:fixed;
+              top: calc(65% - 50px);;
+              left: calc(35% - 400px);;
+              font-size: 25px;
+              font-weight: bold;
+              color: white;
+              background-color: black;
+            }

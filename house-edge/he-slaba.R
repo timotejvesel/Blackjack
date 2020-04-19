@@ -31,15 +31,18 @@ igralec_str1 <- function(igr_roka, karte, i, d_roka, stava, meja, paketi, natura
 }
 
 
-he.slaba <- function(stava, iter, meja, paketi, natural) {
+he.slaba <- function(stava, iter, meja, paketi, natural, updateProgress = NULL) {
   denar_igralec <- 0
   vse_karte <- st_paketov(paketi)
   karte <- sample(vse_karte, length(vse_karte), replace = FALSE)
   st_kart <- length(karte)
   i <- 0
-  zasluzek_izguba <- 0
+  vsota_zacetne_stave <- 0
+  
+  podatki <- data.frame("stevilo" = 0, "denar" = 0)
   
   for (j in 1:iter) {
+    vsota_zacetne_stave <- vsota_zacetne_stave + stava
     i <- as.numeric(i)
     if (i <= (st_kart - 4)) {
       i <- i + 2
@@ -86,17 +89,34 @@ he.slaba <- function(stava, iter, meja, paketi, natural) {
       denar_igralec <- denar_igralec - nova_stava
     }
     
+    if (j %% 10 == 0) {
+      podatki <- rbind(podatki, c(j, denar_igralec))
+    }
+    
+    house_edge_trenutni <- denar_igralec / vsota_zacetne_stave
+    if (is.function(updateProgress)) {
+      if (j %% 500 == 0 || j == 1) {
+        # HE posodabljamo na vsakih 500 iteracij
+        izpis <- paste0(paste("Trenuten house edge:", round(house_edge_trenutni * 100, 2)), "%")
+        
+        if (iter == 10000) {updateProgress(detail = izpis, delez = 5)}
+        else if (iter == 100000) {updateProgress(detail = izpis, delez = 50)}
+        else if (iter == 1000000) {updateProgress(detail = izpis, delez = 500)}
+        
+      }
+    }
+    
   }
   house_edge <- denar_igralec / (iter * stava)
-  return(house_edge)
+  return(list(house_edge,podatki))
 }
 
 ############################################
 
-# paketi <- 8
-# iter <- 100000
+# paketi <- 6
+# iter <- 10000
 # stava <- 1
 # meja <- 15
-# natural <- 1
+# natural <- 1.5
 # he_slaba <- he.slaba(stava,iter,meja, paketi, natural)
 

@@ -102,6 +102,8 @@ igralec_str5 <- function(igr_roka, karte, i, d_roka, stava, paketi, running_coun
 
 ###################################################################################################
 
+###združi igra.d & igra.hs: en parameter za strategijo igralca!
+
 igra.d <- function(stava, paketi, stetje, running_count, denar_igralec, trenutna, karte, natural) {
   i <- trenutna
   i <- as.numeric(i)
@@ -172,7 +174,7 @@ igra.d <- function(stava, paketi, stetje, running_count, denar_igralec, trenutna
 }
 #########################################################################
 
-counting.double <- function(paketi, iter, natural, stetje) {
+counting.double <- function(stava, paketi, iter, natural, stetje, updateProgress = NULL) {
   trenutna <- 0
   #paketi <- 8 #st. paketov kart s katerimi igramo
   stevilo_kart <- paketi * 52
@@ -183,7 +185,7 @@ counting.double <- function(paketi, iter, natural, stetje) {
   
   #iter <- 100 #koliko iger odigramo
   
-  betting_unit <- 1
+  betting_unit <- stava
   running_count <- 0
   vsota_zacetne_stave <- 0
   #stetje <- hi_lo #vrsta stetja kart
@@ -192,6 +194,7 @@ counting.double <- function(paketi, iter, natural, stetje) {
   vsota_zacetne_stave <- stava
   #rc <- c()
   #tc <- c()
+  podatki <- data.frame("stevilo" = 0, "denar" = 0)
   for (j in 1:iter) {
     bj <- igra.d(stava, paketi, stetje, running_count, denar_igralec, trenutna, karte, natural)
     running_count <- bj[[1]][1]
@@ -213,13 +216,29 @@ counting.double <- function(paketi, iter, natural, stetje) {
     if (j != iter) {
       #cat(c("stava",stava,"\n"))
       vsota_zacetne_stave <- vsota_zacetne_stave + stava
+    
+    }
+    if (j %% 10 == 0) {
+      podatki <- rbind(podatki, c(j, denar_igralec))
     }
     
+    house_edge_trenutni <- denar_igralec / vsota_zacetne_stave
+    if (is.function(updateProgress)) {
+      if (j %% 500 == 0 || j == 1) {
+        # HE posodabljamo na vsakih 500 iteracij
+        izpis <- paste0(paste("Trenuten house edge:", round(house_edge_trenutni * 100, 2)), "%")
+        
+        if (iter == 10000) {updateProgress(detail = izpis, delez = 6)}
+        else if (iter == 100000) {updateProgress(detail = izpis, delez = 60)}
+        else if (iter == 1000000) {updateProgress(detail = izpis, delez = 600)}
+        
+      }
+    }
   }
   house_edge <- denar_igralec / vsota_zacetne_stave
   #cat(c(denar_igralec,"\n"))
   #cat(vsota_zacetne_stave)
-  return(house_edge)
+  return(list(house_edge, podatki))
 }
 
 # hes <- c()
@@ -227,4 +246,5 @@ counting.double <- function(paketi, iter, natural, stetje) {
 #   hes <- c(hes,counting())
 # }
 
-# x <- counting.double(8,100000,1.5, hi_opt2)
+# x <- counting.double(1, 4, 100000,1.5, hi_opt2)
+# g <- ggplot(x[[2]], aes(stevilo, denar_dcount)) + geom_line()

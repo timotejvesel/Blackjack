@@ -47,14 +47,30 @@ function(input, output, session) {
       return()
     }
     
+    #sprotno izpisovanje
+    progress <- shiny::Progress$new()
+    progress$set(message = "", value = 0)
+    on.exit(progress$close())
+    
+    updateProgress <- function(value = NULL, detail = NULL, delez) {
+      if (is.null(value)) {
+        value <- progress$getValue()
+        value <- value + (progress$getMax() - value) / delez
+      }
+      progress$set(value = value, detail = detail)
+    }
+    
     if(input$natural1 == "3:2") {
-      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), input$meja, as.numeric(input$paketi1), 1.5)) 
+      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), as.numeric(input$meja), 
+                                      as.numeric(input$paketi1), 1.5, updateProgress)[[1]]) 
     }
     else if (input$natural1 == "6:5") {
-      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), input$meja, as.numeric(input$paketi1), 1.2)) 
+      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), as.numeric(input$meja),
+                                      as.numeric(input$paketi1), 1.2, updateProgress)[[1]]) 
     }
     else {
-      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), input$meja, as.numeric(input$paketi1), 1)) 
+      he <- suppressWarnings(he.slaba(1, as.numeric(input$iter1), as.numeric(input$meja),
+                                      as.numeric(input$paketi1), 1, updateProgress)[[1]]) 
     }
     he <- round(he * 100, 2)
   })
@@ -69,27 +85,41 @@ function(input, output, session) {
       return()
     }
     
+    #sprotno izpisovanje
+    progress <- shiny::Progress$new()
+    progress$set(message = "", value = 0)
+    on.exit(progress$close())
+    
+    updateProgress <- function(value = NULL, detail = NULL, delez) {
+      if (is.null(value)) {
+        value <- progress$getValue()
+        value <- value + (progress$getMax() - value) / delez
+      }
+      progress$set(value = value, detail = detail)
+    }
+    
     if (input$double2) {
       if(input$natural2 == "3:2") {
-        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.5)) 
+        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.5, updateProgress)[[1]]) 
       }
       else if (input$natural2 == "6:5") {
-        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.2)) 
+        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.2, updateProgress)[[1]]) 
       }
       else {
-        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1)) 
+        he <- suppressWarnings(he.double(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1, updateProgress)[[1]]) 
       }
       he <- round(he * 100, 2)
     }
     else { #samo hit&stand
       if(input$natural2 == "3:2") {
-        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.5)) 
+        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.5, updateProgress)) 
+        he <- he[[1]]
       }
       else if (input$natural2 == "6:5") {
-        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.2)) 
+        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1.2, updateProgress)[[1]]) 
       }
       else {
-        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1)) 
+        he <- suppressWarnings(he.hs(1, as.numeric(input$iter2), as.numeric(input$paketi2), 1, updateProgress)[[1]]) 
       }
       he <- round(he * 100, 2)
     }
@@ -97,7 +127,7 @@ function(input, output, session) {
   })
   
   output$hs_opt <- renderText({
-    print(paste("House edge je",he_hs_opt(),"%.")) #naredi lepši izpis, večje črke
+    print(paste("House edge je",he_hs_opt(),"%.")) 
   })
   
   ########## house edge, stetje
@@ -105,29 +135,50 @@ function(input, output, session) {
     if(is.null(input$gumb_hs_count)){
       return()
     }
+    
+    #sprotno izpisovanje
+    progress <- shiny::Progress$new()
+    progress$set(message = "", value = 0)
+    on.exit(progress$close())
+    
+    updateProgress <- function(value = NULL, detail = NULL, delez) {
+      if (is.null(value)) {
+        value <- progress$getValue()
+        value <- value + (progress$getMax() - value) / delez
+      }
+      progress$set(value = value, detail = detail)
+    }
+    
+    
     if (input$double3) { #double
       if(input$natural3 == "3:2") {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1.5, hi_lo)) 
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                                 1.5, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1.5, hi_opt2))
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                                 1.5, hi_opt2, updateProgress)[[1]])
         }
       }
       else if (input$natural3 == "6:5") {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1.2, hi_lo)) 
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                                 1.2, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1.2, hi_opt2))
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3)
+                                                 , 1.2, hi_opt2, updateProgress)[[1]])
         }
       }
       else {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1, hi_lo)) 
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                                 1, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.double(as.numeric(input$paketi3), input$iter3, 1, hi_opt2))
+          he <- suppressWarnings(counting.double(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                                 1, hi_opt2, updateProgress)[[1]])
         }
       }
       he <- round(he * 100, 2)
@@ -136,26 +187,32 @@ function(input, output, session) {
     else {
       if(input$natural3 == "3:2") {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1.5, hi_lo)) 
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1.5, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1.5, hi_opt2))
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1.5, hi_opt2, updateProgress)[[1]])
         }
       }
       else if (input$natural3 == "6:5") {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1.2, hi_lo)) 
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1.2, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1.2, hi_opt2))
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1.2, hi_opt2, updateProgress)[[1]])
         } 
       }
       else {
         if (input$stetje == "Hi-Lo") {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1, hi_lo)) 
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1, hi_lo, updateProgress)[[1]]) 
         }
         else {
-          he <- suppressWarnings(counting.hs(as.numeric(input$paketi3), input$iter3, 1, hi_opt2))
+          he <- suppressWarnings(counting.hs(1, as.numeric(input$paketi3), as.numeric(input$iter3),
+                                             1, hi_opt2, updateProgress)[[1]])
         } 
       }
       he <- round(he * 100, 2)
@@ -164,7 +221,39 @@ function(input, output, session) {
   })
   
   output$hs_stetje <- renderText({
-    print(paste("House edge je", he_hs_count(),"%.")) #naredi lepši izpis, večje črke
+    print(paste("House edge je", he_hs_count(),"%."))
   })
   
+  ######## Zasluzek/izguba
+  narisi_zasluzek <- eventReactive(input$gumb_graf,{
+    if(is.null(input$gumb_graf)){
+      return()
+    }
+    
+    if (input$tip == "Double") {
+      if (input$stetje2 == "Hi-Lo") {
+        graf <- suppressWarnings(narisi.graf.d(1, as.numeric(input$paketi4), 
+                                               as.numeric(input$iter4), as.numeric(input$natural4), hi_lo))
+      }
+      else {
+        graf <- suppressWarnings(narisi.graf.d(1, as.numeric(input$paketi4), 
+                                               as.numeric(input$iter4), as.numeric(input$natural4), hi_opt2))
+      }
+    }
+    else {
+      if (input$stetje2 == "Hi-Lo") {
+        graf <- suppressWarnings(narisi.graf.hs(1, as.numeric(input$paketi4),
+                                                as.numeric(input$iter4), as.numeric(input$natural4), hi_lo, input$meja1))
+      }
+      else {
+        graf <- suppressWarnings(narisi.graf.hs(1, as.numeric(input$paketi4),
+                                               as.numeric(input$iter4), as.numeric(input$natural4), hi_opt2, input$meja1))
+      }
+    }
+  })
+  
+  output$graf_zasluzek <- renderPlotly({
+    print(narisi_zasluzek())
+  })
+
 }

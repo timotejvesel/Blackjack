@@ -111,8 +111,8 @@ for (j in vrstice) {
         }
       }
     }
-    #print(zmaga.hit)
-    print(zmaga.stand)
+    print(zmaga.hit)
+    #  print(zmaga.stand)
     if (zmaga.hit > zmaga.stand) {
       hit.stand[as.character(vs), as.character(k)] <- "H"
     }
