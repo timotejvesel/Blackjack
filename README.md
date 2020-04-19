@@ -1,6 +1,11 @@
 # Blackjack
 Blackjack je ena izmed najbolj popularnih igralniških iger. Gre za igro s kartami, pri kateri igralec oziroma igralci tekmujejo proti delivcu (ang. dealer), pri čemer igralci ne tekmujejo med seboj. Pri igri se uporabi en ali več paketov 52 igralnih kart. Čeprav navzgor ni omejtive, se ponavadi uporabi od 6 do 8 paketov. Igralec stavi, da je njegova vsota kart višja kot dealerjeva, pri čemer vsota ne sme preseči 21 ("bust"). 
 
+### Navodila za zagon Shiny aplikacije
+Glavni program za Shiny se nahaja v datotekah `ui.r` in `server.r`. Aplikacijo lahko poženemo v obeh datotekah s klikom na gumb `Run App`. Poženemo jo lahko tudi, če v konzolo vpišemo ukaz `shiny::runApp`.
+
+Na nekaterih računalnikih je problem s prikazom grafov, zato je potrebno aplikacijo odpreti v brskalniku. To lahko storimo, ko smo že v aplikaciji, s klikom na `Open in Browser` ali pa v konzoli z ukazom `shiny::runApp(launch.browser = TRUE)`.
+
 ### Osnovna pravila
 Igralec in dealer dobita dobita vsak dve karti, pri čemer sta obe igralčevi obrnjeni navzgor, dealerjevi pa ena navzgor ter ena navzdol. Vrednost kart od 2 do 10 je kar njihova vrednost, fant, dama in kralj so vredni 10, as pa je lahko vreden 1 ali pa 11. Vrednost roke (ang. hand value) je vsota vseh kart v roki. Igralec lahko vzame nove karte, da s tem izboljša vrednost roke. Roka z asom, vrednim 11, se imenuje "soft" (mehka), kar pomeni, da če igralec vzame novo karto in vrednost roke preseže 21, se bo vrednost asa spremenila iz 11 v 1. Sicer se roka imenjue "hard" (trda). 
 
@@ -69,6 +74,4 @@ V mapi `house-edge` so programi, ki simulirajo igre Blackjacka:
  * igralec igra optimalno strategijo za hit, stand & double,
  * strategije s štetjem kart.
  
-### Navodila za zagon Shiny aplikacije
-Glavni program za Shiny se nahaja v datoteki `ui.r`.
- 
+V datoteki `graf.r` sta funkciji, ki narišeta grafe zaslužka oz. izgube igralca.
