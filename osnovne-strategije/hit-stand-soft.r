@@ -1,83 +1,8 @@
 # Iskanje optimalne strategije za hit & stand, soft hand
 
-source("funkcije.r") #karte, vsota_kart, strategija dealerja
+source("funkcije.r")
+source ("osnovne-strategije/str_igralec.r")
 
-
-# Strategija igralca. 
-igralec_str <- function(igr_roka, hit) {
-  stevec <- 0
-  d_odkrita <- d_roka[1]
-  stand <- FALSE
-  trenutna_vsota <- vsota_karte(igr_roka)
-  if (hit == FALSE) {
-    #cat(paste(c("Igralčeva roka (stand): ", igr_roka, "\n"), collapse=" "))
-    return(trenutna_vsota)
-  }
-  
-  while (stand != TRUE) {
-    #cat(paste(c("Igralčeva roka (hit): ", igr_roka, "\n"), collapse=" "))
-    trenutna_vsota <- vsota_karte(igr_roka)
-    vrstica <- as.character(trenutna_vsota)
-    stolpec <- as.character(d_odkrita)
-    
-    if ("AS" %in% igr_roka) {
-      indeks <- match("A",igr_roka)
-      vsota_brez <- vsota_karte(igr_roka[-indeks])
-      if (vsota_brez == trenutna_vsota - 11) { # v roki je as vreden 11 -> soft hand
-        element <- soft1[vrstica, stolpec]
-      }
-      else {
-        element <- hit.stand[vrstica, stolpec] #hard hand
-      }
-    }
-    else {
-      element <- hit.stand[vrstica, stolpec] #hard hand
-    }
-    element[is.na(element)] <- 0
-    if (stevec == 0) { # če je hit == TRUE, 1. vedno vzammeo novo karto
-      igr_roka <- c(igr_roka, sample(paket_kart,1))
-      stevec <- stevec + 1
-    }
-    else if (element == "H") {
-      igr_roka <- c(igr_roka, sample(paket_kart,1))
-    } 
-    else {
-      stand <- TRUE
-    }
-    
-  }
-  return(trenutna_vsota)
-}
-
-
-
-igra <- function(gr_roka, d_roka, hit) {
-  zmage <- 0
-  
-  # strategija za igralca
-  igralec <- igralec_str(igr_roka,hit)
-  
-  # če gre igralec preko 21, v vsakem primeru izgubi, tudi če gre dealer preko 21, zato dealer niti ne igra več.
-  if (igralec[1] <= 21) {
-    dealer <- dealer_str_opt(d_roka)
-  }
-  
-  ### možni rezultati:
-  if (igralec[1] > 21) { #bust
-    zmage <- -1
-  }
-  else if (dealer[1] > 21) {
-    zmage <- 1
-  }
-  else if (igralec[1] > dealer[1]) {
-    zmage <- 1
-  }
-  else if (igralec[1] < dealer[1]) {
-    zmage <- -1
-  }
-  #cat(paste(c(zmage,"\n"),sep = " "))
-  return(zmage)
-}
 
 ############################################
 
@@ -114,10 +39,10 @@ for (j in vrstice) {
         #print(d_roka)
         
         if (hit == TRUE) {
-          zmaga.hit <- zmaga.hit + igra(igr_roka, d_roka, hit)
+          zmaga.hit <- zmaga.hit + igra.hs(igr_roka, d_roka, hit, "soft")
         }
         else {
-          zmaga.stand <- zmaga.stand + igra(igr_roka, d_roka, hit)
+          zmaga.stand <- zmaga.stand + igra.hs(igr_roka, d_roka, hit, "soft")
         }
       }
     }

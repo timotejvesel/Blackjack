@@ -6,13 +6,9 @@ library(shinycssloaders)
 library(shinyWidgets)
 library(shinyBS)
 
-
-source("house-edge/he-slaba.R")
-source("house-edge/he-hit-stand.r")
-source("house-edge/he-hit-stand-counting.r")
-source("house-edge/he-double.r")
-source("house-edge/he-double-counting.r")
+source("funkcije.r")
 source("graf.r")
+
 
 dashboardPage(
   dashboardHeader(title = "Blackjack"),
@@ -42,12 +38,12 @@ dashboardPage(
       tabItem(tabName = "hit_stand",
               h2("Tabele osnovnih (optimalnih) strategij za osnovno različico"),
               fluidRow(
-                tabBox(width = 6,
+                tabBox(width = 5,
                        tabPanel("Hard hand", tableOutput("hit_stand_h")),
                        tabPanel("Soft hand", tableOutput("hit_stand_s"))),
 
 
-                box(width = 6, includeMarkdown("markdown/tabele.md")))
+                box(width = 5, includeMarkdown("markdown/tabele.md")))
               ),
         tabItem(tabName = "double",
                 h2("Tabele osnovnih (optimalnih) strategij za različico z double"),
@@ -63,7 +59,7 @@ dashboardPage(
         tabItem(tabName = "he",
                 h2("Izračun house edga"),
                 fluidRow(
-                  tabBox(width = 6,
+                  tabBox(width = 5,
                          tabPanel("'Slaba' strategija", selectInput('meja','Izberi mejo', c(11:21), selected = 16),
                                   selectInput('natural1','Izberi koliko izplača natural 21', c("3:2","6:5","1:1"), selected = "3:2"),
                                   selectInput('paketi1','Stevilo paketov kart', c(4,6,8), selected = 8),
@@ -102,7 +98,7 @@ dashboardPage(
                                   )
                            
                 ),
-                  box(width = 6, includeMarkdown("markdown/house-edge.md"))
+                  box(width = 7, includeMarkdown("markdown/house-edge.md"))
             )
           ),
       
