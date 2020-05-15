@@ -4,18 +4,14 @@ library(ggplot2)
 library(RColorBrewer)
 library(plotly)
 
-source("house-edge/he-double-counting.r")
-source("house-edge/he-double.r")
-source("house-edge/he-hit-stand-counting.r")
-source("house-edge/he-hit-stand.r")
-source("house-edge/he-slaba.R")
+source("funkcije.r")
 
 narisi.graf.d <- function(stava, paketi, iter, natural, stetje) {
   
-  counting <- counting.double(stava, paketi, iter, natural, stetje)
+  counting <- counting(stava, paketi, iter, natural, stetje, "double")
   counting <- counting[[2]]
   
-  opt <- he.double(stava, iter, paketi, natural)
+  opt <- he.bs(stava, iter, paketi, natural, "double")
   opt <- opt[[2]]
   
   x <- counting$stevilo
@@ -47,13 +43,13 @@ narisi.graf.d <- function(stava, paketi, iter, natural, stetje) {
 
 narisi.graf.hs <- function(stava, paketi, iter, natural, stetje, meja) {
   
-  counting <- counting.hs(stava, paketi, iter, natural, stetje)
+  counting <- counting(stava, paketi, iter, natural, stetje, "double")
   counting <- counting[[2]]
   
-  opt <- he.hs(stava, iter, paketi, natural)
+  opt <- he(stava, iter, paketi, natural, "hit_stand")
   opt <- opt[[2]]
   
-  slaba <- he.slaba(stava, iter, meja, paketi, natural)
+  slaba <- he.slaba(stava, iter, meja, paketi, natural, "slaba", NULL, meja)
   slaba <- slaba[[2]]
   
   x <- counting$stevilo

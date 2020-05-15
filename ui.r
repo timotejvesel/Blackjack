@@ -61,10 +61,9 @@ dashboardPage(
               ),
         ### House edge
         tabItem(tabName = "he",
-                
                 h2("Izračun house edga"),
                 fluidRow(
-                  tabBox(width = 6, height = 5,
+                  tabBox(width = 6,
                          tabPanel("'Slaba' strategija", selectInput('meja','Izberi mejo', c(11:21), selected = 16),
                                   selectInput('natural1','Izberi koliko izplača natural 21', c("3:2","6:5","1:1"), selected = "3:2"),
                                   selectInput('paketi1','Stevilo paketov kart', c(4,6,8), selected = 8),

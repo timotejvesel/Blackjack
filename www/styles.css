@@ -10,7 +10,7 @@ background-color: transparent;
 }
 
 h1 {
-  font-family: 'lobster', cursive; /*Brush Script MT???*/
+  font-family: 'Lobster', cursive;
   font-weight: 600;
   line-height: 1.1;
   color: #201058
@@ -18,7 +18,7 @@ h1 {
 }
 
 h2 {
-  font-family: 'lobster', cursive;
+  font-family: 'Lobster', cursive;
   font-weight: 400;
   line-height: 1.1;
   color: black 
@@ -63,7 +63,7 @@ h4 {
 
 .main-header .logo {
   font-family: "Georgia", Times, "Times New Roman", serif;
-  font-weight: bold;
+  font-weight: ;
   font-size: 24px;
 }
 
@@ -198,7 +198,7 @@ border-top-color: #000080;
               height: 80px;
               width: 500px;
               position:fixed;
-              top: calc(65% - 50px);;
+              top: calc(63% - 50px);;
               left: calc(35% - 400px);;
               font-size: 25px;
               font-weight: bold;
