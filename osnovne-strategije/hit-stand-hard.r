@@ -26,7 +26,7 @@ hit.stand[c("3"),] <- "H"
 stolpci <- colnames(hit.stand)
 vrstice <- c(18:4)
 
-n <- 10000 #stevilo iteracij
+n <- 100000 #stevilo iteracij
 
 
 # simulacija iger
